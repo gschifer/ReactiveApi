@@ -1,6 +1,6 @@
 package com.example.reactiveapi.api.domain.exceptions;
 
-public class NotFoundException extends BussinessException {
+public abstract class NotFoundException extends BussinessException {
     public NotFoundException(String message) {
         super(message);
     }

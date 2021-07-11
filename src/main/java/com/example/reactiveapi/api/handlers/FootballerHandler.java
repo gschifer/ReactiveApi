@@ -7,13 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
-import static org.springframework.web.reactive.function.server.ServerResponse.*;
+import static org.springframework.web.reactive.function.server.ServerResponse.created;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
 public class FootballerHandler {
@@ -35,7 +34,7 @@ public class FootballerHandler {
     public Mono<ServerResponse> saveFootballer(ServerRequest request) {
         return request.bodyToMono(Footballer.class)
                 .flatMap(req -> footballerService.save(req))
-                .flatMap(footballer -> created(URI.create("/api/v1/footballer/" + footballer.getId()))
+                .flatMap(footballer -> created(URI.create("/footballer/" + footballer.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .build());
     }
@@ -45,6 +44,12 @@ public class FootballerHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(footballerService.update(request.bodyToMono(Footballer.class), request.pathVariable("id")),
                         Footballer.class);
+    }
+
+    public Mono<ServerResponse> deleteFootballer(ServerRequest request) {
+        return ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(footballerService.delete(request.pathVariable("id")), Void.class);
     }
 
 

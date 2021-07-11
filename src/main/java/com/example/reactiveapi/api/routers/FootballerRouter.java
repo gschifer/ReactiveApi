@@ -13,7 +13,6 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.*
 
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-
 @Configuration
 public class FootballerRouter {
 
@@ -22,6 +21,7 @@ public class FootballerRouter {
         return route(GET("/footballer/all").and(accept(MediaType.APPLICATION_JSON)), handler::getFootballers)
                 .andRoute(POST("/footballer").and(accept(MediaType.APPLICATION_JSON)), handler::saveFootballer)
                 .andRoute(GET("/footballer/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::getFootballer)
-                .andRoute(PUT("/footballer/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::updateFootballer);
+                .andRoute(PUT("/footballer/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::updateFootballer)
+                .andRoute(DELETE("/footballer/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::deleteFootballer);
     }
 }

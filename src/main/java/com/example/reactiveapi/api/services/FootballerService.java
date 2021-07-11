@@ -5,10 +5,7 @@ import com.example.reactiveapi.api.domain.exceptions.FootballerNotFoundException
 import com.example.reactiveapi.api.domain.repository.FootballerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,26 +24,23 @@ public class FootballerService {
     }
 
     public Mono<Footballer> getFootballer(String id) {
-        return footballerRepository.findById(id);
+        return footballerRepository.findById(id).switchIfEmpty(Mono.error(new FootballerNotFoundException()));
     }
 
     public Mono<Footballer> save(Footballer footballer) {
         return footballerRepository.save(footballer);
     }
 
-    public void delete(String id) {
-        footballerRepository.deleteById(id);
+    public Mono<Void> delete(String id) {
+        return getFootballer(id).flatMap(footballer -> footballerRepository.deleteById(footballer.getId()));
     }
 
     public Mono<Footballer> update(Mono<Footballer> footballer, String id) {
         return footballer
-                .flatMap(footballerUpdateBody -> footballerRepository.findById(id)
+                .flatMap(footballerUpdateBody -> getFootballer(id)
                         .flatMap(footballerToBeUpdated -> {
                             BeanUtils.copyProperties(footballerUpdateBody, footballerToBeUpdated, "id", "createdAt");
                             return footballerRepository.save(footballerToBeUpdated);
-                        })
-                        .switchIfEmpty(Mono.error
-                                (new ResponseStatusException(HttpStatus.BAD_REQUEST, "Footballer not found."))));
+                        }));
     }
-
 }
