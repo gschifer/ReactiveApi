@@ -8,7 +8,7 @@ public class Utils {
 
     public static FootballerDTO entityToDto(Footballer footballer) {
         FootballerDTO footballerDTO = new FootballerDTO();
-        BeanUtils.copyProperties(footballer,footballerDTO );
+        BeanUtils.copyProperties(footballer,footballerDTO);
 
         return footballerDTO;
     }

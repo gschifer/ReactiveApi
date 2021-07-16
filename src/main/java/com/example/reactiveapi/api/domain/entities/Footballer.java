@@ -1,5 +1,6 @@
 package com.example.reactiveapi.api.domain.entities;
 
+import com.example.reactiveapi.api.core.validation.Nation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,21 +28,26 @@ public class Footballer {
     @NotBlank
     private String name;
 
-//    private String club;
-//
-//    private String strongFoot;
-//
-//    private Integer age;
-//
-//    private Integer height;
-//
-//    private String nation;
-//
-//    private String numberOfGoals;
-//
-//    private String league;
-//
-//    private BigDecimal salary;
+    private String club;
+
+    private String strongFoot;
+
+    @Min(16)
+    @Max(50)
+    private Integer age;
+
+    @Min(150)
+    @Max(220)
+    private Integer height;
+
+    @Nation
+    private String nation;
+
+    private String numberOfGoals;
+
+    private String league;
+
+    private BigDecimal salary;
 
     @CreatedDate
     @Field(name = "created_at")
