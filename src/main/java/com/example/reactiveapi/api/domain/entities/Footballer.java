@@ -1,6 +1,5 @@
 package com.example.reactiveapi.api.domain.entities;
 
-import com.example.reactiveapi.api.core.validation.Nation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +39,6 @@ public class Footballer {
     @Max(220)
     private Integer height;
 
-    @Nation
     private String nation;
 
     private String numberOfGoals;
